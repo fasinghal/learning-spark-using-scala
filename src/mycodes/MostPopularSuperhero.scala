@@ -34,6 +34,7 @@ object MostPopularSuperhero {
       val id = x._1
       val count = x._2
       //lookup and RDD -> returns Seq[String]. Take first Value
+      //Lookup on RDD is only avaiable when RDD is strictly of (K,V) form
       val heroName = heroRdd.lookup(id)(0)
       println(s"$heroName has : $count friends")
     })

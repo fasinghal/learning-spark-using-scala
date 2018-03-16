@@ -1,4 +1,4 @@
-package com.sundogsoftware.spark
+package sparksql
 
 import org.apache.spark._
 import org.apache.spark.SparkContext._
@@ -48,7 +48,6 @@ object PopularMoviesDataSets {
       .builder
       .appName("PopularMovies")
       .master("local[*]")
-      .config("spark.sql.warehouse.dir", "file:///C:/temp") // Necessary to work around a Windows bug in Spark 2.0.0; omit if you're not on Windows.
       .getOrCreate()
     
     // Read in each rating line and extract the movie ID; construct an RDD of Movie objects.
@@ -75,15 +74,16 @@ object PopularMoviesDataSets {
     // Grab the top 10
     val top10 = topMovieIDs.take(10)
     
-    // Load up the movie ID -> name map
-    val names = loadMovieNames()
+    // Load up the (movie ID -> name) map
+    val movieMap = loadMovieNames()
     
     // Print the results
     println
-    for (result <- top10) {
+    for (result <- top10) { //result is a Row Object
       // result is just a Row at this point; we need to cast it back.
-      // Each row has movieID, count as above.
-      println (names(result(0).asInstanceOf[Int]) + ": " + result(1))
+      // Each row has (movieID, count) as above.
+      // Each Row object has 0 based index for attributes just as a List
+      println (movieMap(result(0).asInstanceOf[Int]) + ": " + result(1))
     }
 
     // Stop the session

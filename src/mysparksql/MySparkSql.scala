@@ -3,6 +3,7 @@ package mysparksql
 import org.apache.spark._
 import org.apache.spark.SparkContext._
 import org.apache.spark.sql._
+import org.apache.spark.sql.functions._
 import org.apache.log4j._
 
 object MySparkSql {
@@ -47,15 +48,21 @@ object MySparkSql {
       //print Data Frame
      teens.show()
       
+      println( "Direct operations on DataSets avoiding SQL") 
       
+      peopleDS.select("name", "age", "id").orderBy("id").show()
+      peopleDS.filter(peopleDS("age")>21).show() // = SELECT * FROM table WHERE 
+      peopleDS.filter(peopleDS("name")==="Will").show()
+      // default is -> orderBy("count") which is ASC
+      peopleDS.groupBy("age").count().orderBy(desc("count")).show() 
       
-      println( "Direct operations on Datasets avoiding SQL") 
-      
-      peopleDS.select("name").orderBy("name").show()
-      peopleDS.filter(peopleDS("age")>21).show()
-      peopleDS.groupBy("age").count().orderBy("age").show()
   
-      spark.stop() //stop the session  
+      peopleDS.select("name", "age", "id").filter(peopleDS("age")>21).show
+      
+      
+      //select columns from Table where age > 21 group by age
+      peopleDS.select("name", "age", "id").filter(peopleDS("age")>21).groupBy("age").count.show
+      spark.stop //stop the session  
   }
   
 }
