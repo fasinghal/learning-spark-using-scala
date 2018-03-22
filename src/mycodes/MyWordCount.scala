@@ -37,7 +37,6 @@ object MyWordCount {
                                  
     topWords.collect().take(10).foreach(println)
     
-    
   }
  
   

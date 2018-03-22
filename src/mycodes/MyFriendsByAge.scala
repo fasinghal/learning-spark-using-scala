@@ -21,17 +21,22 @@ object MyFriendsByAge {
     Logger.getLogger("org").setLevel(Level.INFO)
     val sc = new SparkContext("local[*]", "MyFriendsAgeTest")
     
-    val lines = sc.textFile("../fakefriends.csv") // a,b,c,d
+    val lines = sc.textFile("../SparkScalaMaterial/fakefriends.csv") // a,b,c,d
     
     val dataRdd = lines.map(parseLine) // (age, friends)
     
     val trsnf = dataRdd.mapValues(x => (x,1))
                 .reduceByKey((x,y)=>(x._1+y._1, x._2+y._2))
                 .mapValues(x => x._1/x._2)
-    
     val res = trsnf.collect()
     
     res.sorted.foreach(println)
+    //group by key approach 
+    
+    val secondMethod = dataRdd.groupByKey().mapValues(x =>x.toList.sum/x.toList.length )
+     
+    val res2 = secondMethod.collect().take(10).foreach(println)
+    
     
         
   }

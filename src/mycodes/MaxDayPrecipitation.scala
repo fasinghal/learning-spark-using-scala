@@ -34,7 +34,9 @@ object MaxDayPrecipitation {
     res.collect().sorted.foreach(println)
     
  
-    
+    //test for list for groupByKey operation
+    val myList = List(1,2,3,4)
+    myList.sum/myList.length
     
   }
 }

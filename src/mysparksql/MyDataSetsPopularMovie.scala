@@ -11,9 +11,7 @@ import scala.io.Source
 
 object MyDataSetsPopularMovie {
   
-  
   def loadMovies(): Map[Int, String] = {
-    
     var movieMap : Map[Int, String] = Map()
      implicit val codec = Codec("UTF-8")
     codec.onMalformedInput(CodingErrorAction.REPLACE)
@@ -26,13 +24,12 @@ object MyDataSetsPopularMovie {
       if(fld.length >1){
         movieMap += (fld(0).toInt -> fld(1).toString)
       } 
-    }
-    
+    }    
     return movieMap
   }
   
   case class Movie(movieId : Int)
-  
+
   def main(args : Array[String]){
      Logger.getLogger("org").setLevel(Level.INFO)
      
