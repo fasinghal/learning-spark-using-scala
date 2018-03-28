@@ -23,7 +23,6 @@ object MostPopularSuperhero {
    
     val graph = sc.textFile("../SparkScalaMaterial/Marvel-graph.txt")
     val counts = graph.map(parseLine).reduceByKey((x,y)=>(x+y))
-    
     val topTen = counts.map(x=>x.swap)
                         .sortByKey(false, 1)
                         .map(x=>x.swap).take(10)
